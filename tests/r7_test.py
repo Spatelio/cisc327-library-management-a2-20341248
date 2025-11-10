@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime, timedelta
-from library_service import get_patron_status_report
+from services.library_service import get_patron_status_report
 from database import insert_borrow_record, update_book_availability
 
 # helper function to borrow a book for a patron for testing

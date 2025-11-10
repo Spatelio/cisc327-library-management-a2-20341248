@@ -1,5 +1,5 @@
 import pytest
-from library_service import borrow_book_by_patron
+from services.library_service import borrow_book_by_patron
 from database import insert_book, update_book_availability, get_db_connection
 
 # helper function to get book ids

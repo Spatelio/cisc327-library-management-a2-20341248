@@ -1,5 +1,5 @@
 import pytest
-from library_service import get_all_books
+from services.library_service import get_all_books
 
 def test_catalog_returns_all_books():
     # should return all books in catalog

@@ -1,5 +1,5 @@
 import pytest
-from library_service import add_book_to_catalog
+from services.library_service import add_book_to_catalog
 
 # RESET LIBRARY.DB AND RUN APP SETUP BETWEEN EACH TEST SCRIPT FILE (R1-R7)
 

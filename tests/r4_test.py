@@ -1,7 +1,7 @@
 
 import pytest
 from datetime import datetime, timedelta
-from library_service import return_book_by_patron
+from services.library_service import return_book_by_patron
 from database import insert_borrow_record, update_book_availability, get_patron_borrowed_books
 
 # helper function to borrow a book for a patron for testing

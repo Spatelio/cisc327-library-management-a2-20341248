@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime, timedelta
-from library_service import calculate_late_fee_for_book
+from services.library_service import calculate_late_fee_for_book
 from database import insert_borrow_record, update_book_availability
 
 # helper function to borrow a book for a patron for testing
