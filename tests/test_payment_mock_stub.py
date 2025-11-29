@@ -248,3 +248,53 @@ def test_refund_gateway_failure():
     assert success is False
     assert "failed" in message.lower() or "declined" in message.lower()
     gateway.refund_payment.assert_called_once_with(txn_id, amount)
+
+
+# direct payment gateway tests
+def test_process_payment_invalid_amount():
+    gateway = PaymentGateway()
+    success, txn, msg = gateway.process_payment("123456", 0)
+    assert not success
+    assert "invalid" in msg.lower()
+
+def test_process_payment_amount_too_large():
+    gateway = PaymentGateway()
+    success, txn, msg = gateway.process_payment("123456", 2000)
+    assert not success
+    assert "exceeds limit" in msg.lower()
+
+def test_process_payment_invalid_patron_format():
+    gateway = PaymentGateway()
+    success, txn, msg = gateway.process_payment("123", 10.0)
+    assert not success
+    assert "invalid patron" in msg.lower()
+
+def test_process_payment_successful_transaction():
+    gateway = PaymentGateway()
+    success, txn, msg = gateway.process_payment("123456", 10.0, "Late fee")
+    assert success is True
+    assert txn.startswith("txn_")
+    assert "processed" in msg.lower()
+
+def test_refund_payment_invalid_txn_and_amount():
+    gateway = PaymentGateway()
+    success, msg = gateway.refund_payment("bad_id", -5)
+    assert not success
+    assert "invalid" in msg.lower() or "refund" in msg.lower()
+
+def test_refund_payment_success():
+    gateway = PaymentGateway()
+    success, msg = gateway.refund_payment("txn_123456_1111", 10.0)
+    assert success is True
+    assert "refund" in msg.lower()
+
+def test_verify_payment_status_invalid_txn():
+    gateway = PaymentGateway()
+    result = gateway.verify_payment_status("bad_txn")
+    assert result["status"] == "not_found"
+
+def test_verify_payment_status_valid_txn():
+    gateway = PaymentGateway()
+    result = gateway.verify_payment_status("txn_123456_9999")
+    assert result["status"] == "completed"
+    assert "timestamp" in result
